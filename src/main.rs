@@ -32,5 +32,7 @@ fn run(cli: Cli) -> Result<()> {
             }
             Ok(())
         }
+        // uninstall も同期（ファイル / JSON 操作のみ）。
+        Command::Uninstall => kage_mcp::uninstall::run(),
     }
 }

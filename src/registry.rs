@@ -79,3 +79,22 @@ pub fn write(reg: &Registry) -> Result<()> {
     fs::write(&path, serde_json::to_string_pretty(reg)?)?;
     Ok(())
 }
+
+/// registry.json を読む（uninstall の undo 手順源。§8-5）。無ければ `None`。
+pub fn read() -> Result<Option<Registry>> {
+    let path = paths::registry_path()?;
+    if !path.exists() {
+        return Ok(None);
+    }
+    let reg = serde_json::from_str(&fs::read_to_string(&path)?)?;
+    Ok(Some(reg))
+}
+
+/// registry.json を削除する（undo 消費後。§9-2: 削除は冪等性にとって非イベント）。
+pub fn delete() -> Result<()> {
+    let path = paths::registry_path()?;
+    if path.exists() {
+        fs::remove_file(&path)?;
+    }
+    Ok(())
+}

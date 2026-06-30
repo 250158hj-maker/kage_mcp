@@ -22,4 +22,6 @@ pub enum Command {
     Serve,
     /// kage サーバ到達とコンテキスト取得を検証する（三状態・§7-3 / §9）。
     Status,
+    /// kage の配線を撤去する（痕跡のみ・SSoT と .claude/ は残す・§9-3）。
+    Uninstall,
 }

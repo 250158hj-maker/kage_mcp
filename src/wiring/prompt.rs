@@ -61,6 +61,38 @@ pub fn upsert(path: &Path) -> Result<PromptResult> {
     })
 }
 
+/// CLAUDE.md からトリガーを撤去する（§9-3）。
+///
+/// `is_created` = true → kage が作ったファイルゆえファイルごと削除。
+/// false → マーカー範囲のみ削除し、ユーザーの既存記述は温存する。
+pub fn remove(path: &Path, is_created: bool) -> Result<&'static str> {
+    if is_created {
+        if path.exists() {
+            fs::remove_file(path)?;
+            return Ok("ファイル削除");
+        }
+        return Ok("既に無し");
+    }
+    if !path.exists() {
+        return Ok("既に無し");
+    }
+    let current = fs::read_to_string(path)?;
+    let Some((start, end)) = find_block(&current) else {
+        return Ok("マーカー無し（no-op）");
+    };
+    // マーカー範囲を切り取り、kage が足した前後の空行を畳む（ユーザー記述は温存）。
+    let before = current[..start].trim_end_matches('\n');
+    let after = current[end..].trim_start_matches('\n');
+    let next = match (before.is_empty(), after.is_empty()) {
+        (true, true) => String::new(),
+        (false, true) => format!("{before}\n"),
+        (true, false) => format!("{after}\n"),
+        (false, false) => format!("{before}\n\n{after}\n"),
+    };
+    fs::write(path, next)?;
+    Ok("マーカー範囲を削除")
+}
+
 /// 最初のマーカー開始位置から、次のマーカー終了位置までを1ブロックとして返す。
 fn find_block(text: &str) -> Option<(usize, usize)> {
     let first = text.find(MARKER)?;

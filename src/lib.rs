@@ -12,4 +12,5 @@ pub mod paths;
 pub mod registry;
 pub mod scaffold;
 pub mod status;
+pub mod uninstall;
 pub mod wiring;
