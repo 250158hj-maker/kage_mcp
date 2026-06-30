@@ -8,3 +8,4 @@ pub mod error;
 pub mod mcp;
 pub mod paths;
 pub mod scaffold;
+pub mod status;

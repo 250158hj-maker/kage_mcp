@@ -22,5 +22,13 @@ fn run(cli: Cli) -> Result<()> {
                 .map_err(|e| KageError::new(format!("tokio ランタイム生成に失敗: {e}")))?;
             runtime.block_on(kage_mcp::mcp::serve::run())
         }
+        // status は同期（std の TCP/ファイルのみ）。ランタイム不要。
+        // ヘルスチェックとして不健全（接続失敗 / 取得失敗）は非ゼロ終了でスクリプトから検知可能に。
+        Command::Status => {
+            if !kage_mcp::status::run()? {
+                std::process::exit(1);
+            }
+            Ok(())
+        }
     }
 }

@@ -18,4 +18,6 @@ pub struct Cli {
 pub enum Command {
     /// MCP サーバを foreground 起動する（localhost 固定ポート・§5-6 / §5-7）。
     Serve,
+    /// kage サーバ到達とコンテキスト取得を検証する（三状態・§7-3 / §9）。
+    Status,
 }
