@@ -16,6 +16,8 @@ fn main() {
 
 fn run(cli: Cli) -> Result<()> {
     match cli.command {
+        // init は同期（検出・ファイル/JSON 配線のみ）。
+        Command::Init => kage_mcp::init::run(),
         Command::Serve => {
             // serve のみ async。サブコマンド単位でランタイムを起こす（sync コマンドに async を強いない）。
             let runtime = tokio::runtime::Runtime::new()

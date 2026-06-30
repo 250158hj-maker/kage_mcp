@@ -48,3 +48,9 @@ impl From<std::io::Error> for KageError {
         KageError::new(format!("I/O エラー: {e}"))
     }
 }
+
+impl From<serde_json::Error> for KageError {
+    fn from(e: serde_json::Error) -> Self {
+        KageError::new(format!("JSON エラー: {e}"))
+    }
+}

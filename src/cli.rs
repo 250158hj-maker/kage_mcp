@@ -16,6 +16,8 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Command {
+    /// 各面を検出し、CLAUDE.md トリガーと MCP 設定を配線する（冪等・§9）。
+    Init,
     /// MCP サーバを foreground 起動する（localhost 固定ポート・§5-6 / §5-7）。
     Serve,
     /// kage サーバ到達とコンテキスト取得を検証する（三状態・§7-3 / §9）。

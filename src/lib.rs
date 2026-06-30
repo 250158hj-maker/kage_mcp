@@ -4,8 +4,12 @@
 //! 設計の最終権威は `docs/基本設計書.md`。本コードのコメントは「なぜ」を §N / ADR で指す。
 pub mod cli;
 pub mod config;
+pub mod detection;
 pub mod error;
+pub mod init;
 pub mod mcp;
 pub mod paths;
+pub mod registry;
 pub mod scaffold;
 pub mod status;
+pub mod wiring;
